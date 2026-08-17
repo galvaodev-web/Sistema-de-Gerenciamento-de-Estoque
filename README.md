@@ -2,6 +2,8 @@
 
 Aplicação full stack para controlar produtos, categorias, entradas e saídas de estoque. O projeto foi construído para demonstrar uma API REST em Java com arquitetura em camadas e uma interface administrativa responsiva, mantendo o código direto e adequado para estudo.
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/galvaodev-web/Sistema-de-Gerenciamento-de-Estoque)
+
 ## Tecnologias
 
 - Java 21 e Spring Boot 3
@@ -88,6 +90,17 @@ Linux/macOS:
 ```
 
 Acesse o painel em [http://localhost:8080](http://localhost:8080) e o Swagger em [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html).
+
+## Deploy no Render
+
+O arquivo `render.yaml` provisiona a aplicação e o PostgreSQL automaticamente:
+
+1. Clique no botão **Deploy to Render** no início deste README.
+2. Entre ou crie uma conta no Render e autorize o acesso ao GitHub.
+3. Confirme **Deploy Blueprint**.
+4. Aguarde o serviço ficar com o status `Live` e abra a URL `.onrender.com` exibida pelo Render.
+
+As credenciais do banco são geradas e vinculadas pelo Render, sem serem gravadas no repositório. Serviços gratuitos podem levar alguns segundos para responder após períodos sem acesso.
 
 ## API
 

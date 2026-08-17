@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: sistema-gerenciamento-estoque
+    runtime: docker
+    plan: free
+    region: ohio
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/dashboard
+    autoDeploy: true
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: estoque-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: estoque-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: estoque-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: estoque-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: estoque-db
+          property: password
+
+databases:
+  - name: estoque-db
+    plan: free
+    region: ohio
+    databaseName: estoque
+    user: estoque_user
+    postgresMajorVersion: "17"
