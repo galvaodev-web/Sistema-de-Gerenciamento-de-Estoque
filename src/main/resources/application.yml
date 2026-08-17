@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: estoque
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/estoque_db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
