@@ -1,3 +1,5 @@
+import {demoApi} from './demo-api.js';
+
 const json = async (url, options={}) => {
   const response = await fetch(url,{headers:{'Content-Type':'application/json',...(options.headers||{})},...options});
   if(response.status===204) return null;
@@ -5,7 +7,7 @@ const json = async (url, options={}) => {
   if(!response.ok) throw new Error(data?.mensagem || Object.values(data?.campos||{})[0] || 'Não foi possível concluir a operação');
   return data;
 };
-export const api={
+const backendApi={
  dashboard:()=>json('/api/dashboard'), categorias:()=>json('/api/categorias'),
  salvarCategoria:(data,id)=>json(`/api/categorias${id?'/'+id:''}`,{method:id?'PUT':'POST',body:JSON.stringify(data)}),
  excluirCategoria:id=>json(`/api/categorias/${id}`,{method:'DELETE'}),
@@ -15,3 +17,6 @@ export const api={
  movimentos:(tipo='')=>json('/api/movimentacoes'+(tipo?`?tipo=${tipo}`:'')),
  movimentar:(tipo,data)=>json(`/api/movimentacoes/${tipo}`,{method:'POST',body:JSON.stringify(data)})
 };
+
+export const modoDemo = location.hostname.endsWith('github.io');
+export const api = modoDemo ? demoApi : backendApi;
