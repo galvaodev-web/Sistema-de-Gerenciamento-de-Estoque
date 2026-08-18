@@ -2,6 +2,8 @@
 
 Aplicação full stack para controlar produtos, categorias, entradas e saídas de estoque. O projeto foi construído para demonstrar uma API REST em Java com arquitetura em camadas e uma interface administrativa responsiva, mantendo o código direto e adequado para estudo.
 
+**[Abrir demonstração online](https://galvaodev-web.github.io/Sistema-de-Gerenciamento-de-Estoque/)**
+
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/galvaodev-web/Sistema-de-Gerenciamento-de-Estoque)
 
 ## Tecnologias
