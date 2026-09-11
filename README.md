@@ -1,33 +1,59 @@
 # Sistema de Gerenciamento de Estoque
 
-Aplicação full stack para controlar produtos, categorias, entradas e saídas de estoque. O projeto foi construído para demonstrar uma API REST em Java com arquitetura em camadas e uma interface administrativa responsiva, mantendo o código direto e adequado para estudo.
+Aplicação full stack para controle de produtos, categorias, entradas e saídas de estoque, desenvolvida com foco em arquitetura backend, regras de negócio e experiência administrativa.
 
 **[Abrir demonstração online](https://galvaodev-web.github.io/Sistema-de-Gerenciamento-de-Estoque/)**
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/galvaodev-web/Sistema-de-Gerenciamento-de-Estoque)
 
+## Destaques
+
+- API REST em Java 21 e Spring Boot 3
+- Arquitetura em camadas
+- PostgreSQL com Spring Data JPA
+- Regras de negócio para movimentação de estoque
+- Validação de dados e erros padronizados
+- Testes unitários com JUnit 5 e Mockito
+- Swagger / OpenAPI
+- Interface administrativa responsiva
+- Deploy preparado para Render
+
 ## Tecnologias
 
-- Java 21 e Spring Boot 3
-- Spring Web, Spring Data JPA e Bean Validation
+### Backend
+- Java 21
+- Spring Boot 3
+- Spring Web
+- Spring Data JPA
+- Bean Validation
 - PostgreSQL
-- Lombok e Maven Wrapper
+- Lombok
+- Maven Wrapper
 - Swagger / OpenAPI
-- JUnit 5 e Mockito
-- HTML5, CSS3 e JavaScript modular
+- JUnit 5
+- Mockito
+
+### Frontend
+- HTML5
+- CSS3
+- JavaScript modular
 
 ## Funcionalidades
 
-- CRUD de produtos com desativação lógica e SKU único
-- CRUD de categorias, impedindo exclusão quando existem produtos vinculados
+- CRUD de produtos com desativação lógica
+- SKU único por produto
+- CRUD de categorias
+- Proteção contra exclusão de categorias vinculadas
 - Registro transacional de entradas e saídas
-- Bloqueio de saída superior ao saldo disponível
-- Histórico com filtros por produto, tipo ou período
-- Identificação de produtos com quantidade menor ou igual ao estoque mínimo
-- Dashboard com produtos ativos, unidades, valor pelo preço de compra, estoque baixo e movimentações
-- Respostas de erro padronizadas e validação dos dados de entrada
+- Bloqueio de saída acima do saldo disponível
+- Histórico de movimentações
+- Filtros por produto, tipo e período
+- Identificação de estoque baixo
+- Dashboard com indicadores principais
+- Respostas de erro padronizadas
+- Validação de dados de entrada
 - Documentação interativa da API
-- Painel web responsivo integrado à API
+- Painel web responsivo integrado ao backend
 
 ## Arquitetura
 
@@ -37,21 +63,33 @@ Controller → Service → Repository → PostgreSQL
     DTO     Regras de negócio
 ```
 
-- `controller`: define os recursos e códigos HTTP.
-- `service`: concentra regras de negócio e transações.
-- `repository`: abstrai consultas e persistência com JPA.
-- `model`: contém entidades e enum do domínio.
-- `dto`: define contratos de entrada e saída da API.
-- `exception`: padroniza erros com `@RestControllerAdvice`.
-- `config`: configura a documentação OpenAPI.
-- `static`: contém o frontend servido pelo Spring Boot.
+### Organização
+
+- `controller`: endpoints e códigos HTTP
+- `service`: regras de negócio e transações
+- `repository`: persistência e consultas JPA
+- `model`: entidades e enums do domínio
+- `dto`: contratos de entrada e saída
+- `exception`: tratamento padronizado de erros
+- `config`: configuração OpenAPI
+- `static`: frontend servido pelo Spring Boot
+
+## Regras de negócio relevantes
+
+O projeto implementa regras que vão além de um CRUD básico:
+
+- um SKU não pode ser duplicado;
+- uma saída não pode superar o saldo disponível;
+- categorias vinculadas a produtos não podem ser removidas indevidamente;
+- produtos abaixo do estoque mínimo são identificados automaticamente;
+- movimentações preservam o histórico do estoque.
 
 ## Como executar
 
 ### Pré-requisitos
 
 - JDK 21
-- PostgreSQL 14 ou superior
+- PostgreSQL 14+
 
 ### 1. Crie o banco
 
@@ -61,7 +99,7 @@ CREATE DATABASE estoque_db;
 
 ### 2. Configure as variáveis de ambiente
 
-Copie os nomes disponíveis em `.env.example` e configure-os no terminal ou na IDE. O Spring lê:
+Use os nomes disponíveis em `.env.example`:
 
 | Variável | Exemplo |
 |---|---|
@@ -69,7 +107,7 @@ Copie os nomes disponíveis em `.env.example` e configure-os no terminal ou na I
 | `DB_USERNAME` | `postgres` |
 | `DB_PASSWORD` | sua senha local |
 
-No PowerShell, para a sessão atual:
+No PowerShell:
 
 ```powershell
 $env:DB_URL="jdbc:postgresql://localhost:5432/estoque_db"
@@ -91,18 +129,17 @@ Linux/macOS:
 ./mvnw spring-boot:run
 ```
 
-Acesse o painel em [http://localhost:8080](http://localhost:8080) e o Swagger em [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html).
+Painel:
 
-## Deploy no Render
+```text
+http://localhost:8080
+```
 
-O arquivo `render.yaml` provisiona a aplicação e o PostgreSQL automaticamente:
+Swagger:
 
-1. Clique no botão **Deploy to Render** no início deste README.
-2. Entre ou crie uma conta no Render e autorize o acesso ao GitHub.
-3. Confirme **Deploy Blueprint**.
-4. Aguarde o serviço ficar com o status `Live` e abra a URL `.onrender.com` exibida pelo Render.
-
-As credenciais do banco são geradas e vinculadas pelo Render, sem serem gravadas no repositório. Serviços gratuitos podem levar alguns segundos para responder após períodos sem acesso.
+```text
+http://localhost:8080/swagger-ui.html
+```
 
 ## API
 
@@ -115,10 +152,10 @@ As credenciais do banco são geradas e vinculadas pelo Render, sem serem gravada
 | `PUT` / `DELETE` | `/api/categorias/{id}` | Altera ou exclui uma categoria |
 | `POST` | `/api/movimentacoes/entrada` | Registra uma entrada |
 | `POST` | `/api/movimentacoes/saida` | Registra uma saída |
-| `GET` | `/api/movimentacoes` | Consulta o histórico e seus filtros |
-| `GET` | `/api/dashboard` | Retorna os indicadores principais |
+| `GET` | `/api/movimentacoes` | Consulta o histórico e filtros |
+| `GET` | `/api/dashboard` | Retorna indicadores principais |
 
-Exemplo de produto:
+### Exemplo de payload
 
 ```json
 {
@@ -136,31 +173,49 @@ Exemplo de produto:
 
 ## Testes
 
-Os testes unitários cobrem cadastro, SKU duplicado, estoque baixo, entradas, saídas e saldo insuficiente:
+Os testes unitários cobrem cenários como:
+
+- cadastro de produtos;
+- SKU duplicado;
+- estoque baixo;
+- entradas;
+- saídas;
+- saldo insuficiente.
+
+Execute com:
 
 ```powershell
 .\mvnw.cmd test
 ```
 
-## Screenshots
+## Deploy
 
-Adicione aqui capturas do dashboard, da listagem de produtos e da tela de movimentações após iniciar o projeto com dados de demonstração.
+O projeto possui configuração para deploy no Render por meio de `render.yaml`, incluindo aplicação e PostgreSQL.
 
-## Melhorias futuras
+As credenciais do banco são vinculadas por variáveis de ambiente e não ficam armazenadas no repositório.
 
-- Spring Security, JWT, usuários e permissões
-- Relatórios e exportação em PDF/Excel
-- Paginação e filtros combinados no histórico
-- Migrações de banco com Flyway
-- Docker e deploy em nuvem
+## Roadmap
 
-## Sugestão de commits
+- Spring Security
+- JWT
+- Usuários e permissões
+- Flyway
+- Paginação avançada
+- Relatórios e exportação
+- Docker
+- CI/CD
 
-```text
-feat: add product and category CRUD
-feat: implement stock movements
-feat: create inventory dashboard
-test: add inventory service tests
-feat: add responsive admin interface
-docs: add project documentation
-```
+## O que este projeto demonstra
+
+- Modelagem de domínio
+- Regras de negócio
+- Arquitetura em camadas
+- API REST
+- Persistência relacional
+- Testes automatizados
+- Documentação de API
+- Deploy de aplicação backend
+
+---
+
+Desenvolvido por [Guilherme Galvão](https://github.com/galvaodev-web).
